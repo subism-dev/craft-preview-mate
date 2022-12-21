@@ -96,7 +96,8 @@
             Craft.PreviewMate.settings.matrixFields.forEach((field) => {
                 if (typeof field.handle !== "string") return;
                 const matrixHandle = field.handle;
-                const editorBlocksQuery = Craft.PreviewMate.getEditorBlocksQuerySelectorString(matrixHandle, field.excludedBlocks);
+                const repeaterType = field.repeaterType;
+                const editorBlocksQuery = Craft.PreviewMate.getEditorBlocksQuerySelectorString(matrixHandle, field.excludedBlocks,repeaterType);
                 const previewBlocksQuery = Craft.PreviewMate.getPreviewBlocksQueryString(matrixHandle);
 
                 const editorBlocks = [];
@@ -122,7 +123,7 @@
                         preview_block.classList.add("is-hovering");
                         editorBlocks[i].style.border = "2px solid #9ba3b5";
                     });
-            
+
                     preview_block.addEventListener("mouseleave", function () {
                         preview_block.classList.remove("is-hovering");
                         editorBlocks[i].style.border = "2px solid transparent";
@@ -131,8 +132,13 @@
             });
         },
 
-        getEditorBlocksQuerySelectorString(matrixHandle, excludedBlocks) {
-            let editorMatrixQuery = ".matrix.matrix-field#fields-" + matrixHandle + " .blocks div.matrixblock:not(.disabled):not(.superTableMatrix)";
+        getEditorBlocksQuerySelectorString(matrixHandle, excludedBlocks, repeaterType) {
+            let editorMatrixQuery = null
+            if(repeaterType && repeaterType === 'neo'){
+                editorMatrixQuery = "#fields-" + matrixHandle + "-field .field";
+            }else{
+                editorMatrixQuery = ".matrix.matrix-field#fields-" + matrixHandle + " .blocks div.matrixblock:not(.disabled):not(.superTableMatrix)";
+            }
             if (Array.isArray(excludedBlocks) && excludedBlocks.length) {
                 excludedBlocks.forEach(blockHandle => {
                     if (typeof blockHandle === "string") {
