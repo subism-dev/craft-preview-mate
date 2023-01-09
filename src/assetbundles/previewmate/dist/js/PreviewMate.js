@@ -102,8 +102,13 @@
 
                 const editorBlocks = [];
                 Craft.PreviewMate.lpEditorContainer.querySelectorAll(editorBlocksQuery).forEach(function excludeNestedMatrixBlocks(block) {
-                    const parentMatrixBlock = block.parentElement.closest("div.matrixblock");
-                    if (!parentMatrixBlock) editorBlocks.push(block);
+                    var parentBlock = '';
+                    if(repeaterType && repeaterType === 'neo'){
+                        parentBlock = block.parentElement.closest(".field:not(#fields-" + matrixHandle + "-field)");
+                    }else{
+                        parentBlock = block.parentElement.closest("div.matrixblock");
+                    }
+                    if (!parentBlock) editorBlocks.push(block);
                 });
                 const previewBlocks = iframe.contentWindow.document.body.querySelectorAll(previewBlocksQuery);
 
