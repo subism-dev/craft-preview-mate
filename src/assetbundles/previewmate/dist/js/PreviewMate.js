@@ -155,7 +155,7 @@
         },
 
         getPreviewBlocksQueryString(matrixHandle) {
-            return "[preview-block='" + matrixHandle + "']";
+            return "[data-preview-block='" + matrixHandle + "'], [preview-block='" + matrixHandle + "']";
         },
 
         hasPreviewButton() {
